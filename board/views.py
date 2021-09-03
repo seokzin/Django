@@ -49,4 +49,10 @@ def update(request, pk):
     return redirect('board:detail', question.pk)
 
 def delete(request, pk):
-    pass
+    question = Question.objects.get(pk=pk)
+
+    if request.method == 'POST':
+        question.delete()
+        return redirect('board:index')
+    else:
+        return redirect('board:detail', question.pk)
