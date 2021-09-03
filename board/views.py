@@ -1,12 +1,18 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Question
 
 def new(request):
-    return render(request, )
+    return render(request, 'board/new.html')
 
 
 def create(request):
-    pass
+    question = Question()
+    question.title = request.POST.get('title')
+    question.category = request.POST.get('category')
+    question.content = request.POST.get('content')
+    question.save()
+
+    return redirect('board:detail', question.pk)
 
 
 def index(request):
