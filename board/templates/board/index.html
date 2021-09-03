@@ -5,7 +5,9 @@
   <h1>INDEX</h1>
   <ul>
     {% for question in questions %}
-    <li>{{ question.title }}</li>
+    <li>
+      <a href="{% url 'board:detail' question.pk %}">{{ question.title }}</a>
+    </li>
     {% endfor %}
   </ul>
 
