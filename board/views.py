@@ -32,12 +32,21 @@ def detail(request, pk):
 
 
 def edit(request, pk):
-    return render(request, )
+    question = Question.objects.get(pk=pk)
+    context = {
+        'question': question,
+    }
+    return render(request, 'board/edit.html', context)
 
 
 def update(request, pk):
-    pass
+    question = Question.objects.get(pk=pk)
+    question.title = request.POST.get('title')
+    question.category = request.POST.get('category')
+    question.content = request.POST.get('content')
+    question.save()
 
+    return redirect('board:detail', question.pk)
 
 def delete(request, pk):
     pass
