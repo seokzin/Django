@@ -10,7 +10,11 @@ def create(request):
 
 
 def index(request):
-    return render(request, )
+    questions = Question.objects.all()
+    context = {
+        'questions': questions,
+    }
+    return render(request, 'board/index.html', context)
 
 
 def detail(request, pk):
