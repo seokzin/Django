@@ -18,7 +18,11 @@ def index(request):
 
 
 def detail(request, pk):
-    return render(request, )
+    question = Question.objects.get(pk=pk)
+    context = {
+        'question': question,
+    }
+    return render(request, 'board/detail.html', context)
 
 
 def edit(request, pk):
