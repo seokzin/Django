@@ -1,58 +1,58 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_safe, require_POST, require_http_methods
 from .models import Question
+from .forms import QuestionForm
 
-def new(request):
-    return render(request, 'board/new.html')
-
-
+@require_http_methods(['GET', 'POST'])
 def create(request):
-    question = Question()
-    question.title = request.POST.get('title')
-    question.category = request.POST.get('category')
-    question.content = request.POST.get('content')
-    question.save()
+    if request.method == 'POST':
+        form = QuestionForm(request.POST)
+        if form.is_valid():
+            question = form.save()  
+            return redirect('questions:detail', question.pk)
+    else:
+        form = QuestionForm()
 
-    return redirect('board:detail', question.pk)
+    context = {'form': form}
+    return render(request, 'board/form.html', context)
 
 
+@require_http_methods(['GET', 'SAFE'])
 def index(request):
-    questions = Question.objects.all()
-    context = {
-        'questions': questions,
-    }
+    # pk 내림차순 정렬
+    questions = Question.objects.order_by('-pk')
+    context = {'questions': questions,}
     return render(request, 'board/index.html', context)
 
 
-def detail(request, pk):
-    question = Question.objects.get(pk=pk)
-    context = {
-        'question': question,
-    }
+@require_safe
+def detail(request, question_pk):
+    question = get_object_or_404(Question, pk=question_pk)
+    context = {'question': question,}
     return render(request, 'board/detail.html', context)
 
 
-def edit(request, pk):
-    question = Question.objects.get(pk=pk)
+@require_http_methods(['GET', 'POST'])
+def update(request, question_pk):
+    question = get_object_or_404(Question, pk=question_pk)
+    
+    if request.method == 'POST':
+        form = QuestionForm(request.POST, instance=question)
+        if form.is_valid():
+            question = form.save()              
+            return redirect('questions:detail', question.pk)
+    else:
+        form = QuestionForm(instance=question)
+    
     context = {
         'question': question,
+        'form': form,
     }
-    return render(request, 'board/edit.html', context)
+    return render(request, 'board/form.html', context)
 
 
-def update(request, pk):
-    question = Question.objects.get(pk=pk)
-    question.title = request.POST.get('title')
-    question.category = request.POST.get('category')
-    question.content = request.POST.get('content')
-    question.save()
-
-    return redirect('board:detail', question.pk)
-
-def delete(request, pk):
-    question = Question.objects.get(pk=pk)
-
-    if request.method == 'POST':
-        question.delete()
-        return redirect('board:index')
-    else:
-        return redirect('board:detail', question.pk)
+@require_POST
+def delete(request, question_pk):
+    question = get_object_or_404(Question, pk=question_pk)
+    question.delete()
+    return redirect('questions:index')

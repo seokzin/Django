@@ -1,0 +1,12 @@
+{% extends 'base.html' %} {% block content %}
+
+<form method="POST">
+  {% csrf_token %}
+
+  <!-- form 은 input 관련해서만 생성 -->
+  {{ form.as_p }}
+
+  <button>제출</button>
+</form>
+
+{% endblock content %}
