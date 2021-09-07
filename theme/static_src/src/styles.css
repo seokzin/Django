@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+label[for="id_content"] {
+  @apply text-2xl;
+}
