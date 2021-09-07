@@ -252,4 +252,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Tailwind CSS
+node_modules
+
 # End of https://www.toptal.com/developers/gitignore/api/windows,venv,python,django
