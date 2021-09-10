@@ -9,7 +9,7 @@ def create(request):
         form = QuestionForm(request.POST)
         if form.is_valid():
             question = form.save()  
-            return redirect('questions:detail', question.pk)
+            return redirect('board:detail', question.pk)
     else:
         form = QuestionForm()
 
@@ -39,7 +39,7 @@ def update(request, question_pk):
         form = QuestionForm(request.POST, instance=question)
         if form.is_valid():
             question = form.save()              
-            return redirect('questions:detail', question.pk)
+            return redirect('board:detail', question.pk)
     else:
         form = QuestionForm(instance=question)
     
@@ -54,4 +54,4 @@ def update(request, question_pk):
 def delete(request, question_pk):
     question = get_object_or_404(Question, pk=question_pk)
     question.delete()
-    return redirect('questions:index')
+    return redirect('board:index')

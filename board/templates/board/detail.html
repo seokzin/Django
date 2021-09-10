@@ -6,7 +6,9 @@
   {{ question.created_at }} | {{ question.updated_at }}
 </strong>
 
-<p>{{ question.content }}</p>
+<h2>{{ question.get_category_display}}</h2>
+
+<p>{{ question.content|linebreaksbr }}</p>
 
 <div>
   <a href="{% url 'board:index' %}"><button>Back</button></a>
