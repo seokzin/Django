@@ -19,7 +19,6 @@ def create(request):
 
 @require_http_methods(['GET', 'SAFE'])
 def index(request):
-    # pk 내림차순 정렬
     questions = Question.objects.order_by('-pk')
     context = {'questions': questions,}
     return render(request, 'board/index.html', context)
