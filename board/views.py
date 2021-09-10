@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_safe, require_POST, require_http_methods
 from .models import Question
@@ -20,7 +21,13 @@ def create(request):
 @require_http_methods(['GET', 'SAFE'])
 def index(request):
     questions = Question.objects.order_by('-pk')
-    context = {'questions': questions,}
+
+    paginator = Paginator(questions, 2)
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {'page_obj': page_obj,}
     return render(request, 'board/index.html', context)
 
 
