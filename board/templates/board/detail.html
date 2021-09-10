@@ -1,26 +1,25 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<h1>{{ question.title }}</h1>
+<strong>
+  {{ question.created_at }} | {{ question.updated_at }}
+</strong>
 
-  <h1>{{ question.title }}</h1>
-  <p>{{ question.created_at }}</p>
-  <p>{{ question.updated_at }}</p>
-  <h2>{{ question.category }}</h2>
-  <p>
-    {{ question.content }}
-  </p>
+<h2>{{ question.get_category_display}}</h2>
 
-<hr />
+<p>{{ question.content|linebreaksbr }}</p>
 
 <div>
-  <a href="{% url 'board:edit' question.pk %}">
-    <button>수정</button>
-  </a>
+  <a href="{% url 'board:index' %}"><button>Back</button></a>
+</div>
+
+<div>
+  <a href="{% url 'board:update' question.pk %}"><button>Edit</button></a>
 </div>
 
 <form action="{% url 'board:delete' question.pk %}" method="POST">
   {% csrf_token %}
-  <button>삭제</button>
+  <button onclick="return confirm('삭제하시겠습니까?')">Delete</button>
 </form>
-
 {% endblock content %}
